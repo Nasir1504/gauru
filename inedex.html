@@ -1,1 +1,1201 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veltrixair Clinician — Doctor Mobile App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root{
+  --blue-900:#0C2340;--blue-800:#0F3460;--blue-700:#1351A0;--blue-600:#1A65C0;--blue-500:#2176D6;
+  --blue-400:#4A90E2;--blue-300:#93C5FD;--blue-100:#DBEAFE;--blue-50:#EFF6FF;
+  --green-700:#047857;--green-600:#059669;--green-500:#10B981;--green-400:#34D399;--green-100:#D1FAE5;--green-50:#ECFDF5;
+  --teal-700:#0F766E;--teal-600:#0D9488;--teal-500:#14B8A6;--teal-100:#CCFBF1;--teal-50:#F0FDFA;
+  --red-700:#B91C1C;--red-600:#DC2626;--red-500:#EF4444;--red-100:#FEE2E2;--red-50:#FEF2F2;
+  --amber-700:#B45309;--amber-600:#D97706;--amber-500:#F59E0B;--amber-100:#FEF3C7;--amber-50:#FFFBEB;
+  --purple-600:#7C3AED;--purple-100:#EDE9FE;
+  --gray-900:#111827;--gray-800:#1F2937;--gray-700:#374151;--gray-600:#4B5563;--gray-500:#6B7280;
+  --gray-400:#9CA3AF;--gray-300:#D1D5DB;--gray-200:#E5E7EB;--gray-100:#F3F4F6;--gray-50:#F9FAFB;--white:#fff;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{font-family:'DM Sans',system-ui,sans-serif;color:var(--gray-800);}
+body{background:
+  radial-gradient(ellipse 800px 600px at 20% 10%,rgba(19,81,160,.12),transparent),
+  radial-gradient(ellipse 700px 500px at 85% 90%,rgba(13,148,136,.12),transparent),
+  linear-gradient(160deg,#0c1f3a 0%,#0a1729 100%);
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 16px 60px;}
+
+/* ── Showcase header ── */
+.showcase-head{text-align:center;max-width:680px;margin-bottom:34px;}
+.sh-logo{display:inline-flex;align-items:center;gap:11px;margin-bottom:18px;}
+.sh-mark{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--blue-500),var(--teal-600));
+  display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(13,148,136,.4);}
+.sh-mark svg{width:26px;height:26px;}
+.sh-logo-txt .n{font-family:'Instrument Serif',serif;font-size:21px;color:#fff;line-height:1;}
+.sh-logo-txt .s{font-size:9px;color:var(--teal-500);letter-spacing:2.4px;text-transform:uppercase;font-weight:700;margin-top:4px;}
+.showcase-head h1{font-family:'Instrument Serif',serif;font-size:34px;color:#fff;font-weight:400;line-height:1.15;margin-bottom:10px;}
+.showcase-head h1 em{font-style:italic;color:var(--teal-500);}
+.showcase-head p{font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.6;}
+.sh-tags{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+.sh-tag{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:20px;
+  padding:5px 13px;font-size:10.5px;color:rgba(255,255,255,.7);font-weight:500;display:flex;align-items:center;gap:5px;}
+.sh-tag i{font-size:12px;color:var(--teal-500);}
+
+/* ── Phone frame ── */
+.phone{width:390px;height:844px;background:#000;border-radius:54px;padding:13px;position:relative;
+  box-shadow:0 50px 100px rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.06),inset 0 0 3px rgba(255,255,255,.1);
+  flex-shrink:0;}
+.phone-screen{width:100%;height:100%;background:var(--gray-50);border-radius:42px;overflow:hidden;position:relative;}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:128px;height:32px;background:#000;
+  border-radius:0 0 20px 20px;z-index:1000;}
+.statusbar{position:absolute;top:0;left:0;right:0;height:52px;display:flex;align-items:flex-end;
+  justify-content:space-between;padding:0 28px 7px;font-size:13px;font-weight:600;z-index:900;color:var(--gray-900);}
+.statusbar.dark{color:#fff;}
+.statusbar .sb-r{display:flex;gap:6px;align-items:center;font-size:14px;}
+
+.app{position:absolute;inset:0;display:flex;flex-direction:column;}
+.app-scroll{flex:1;overflow-y:auto;padding-top:52px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.app-scroll::-webkit-scrollbar{display:none;}
+
+/* ── Screens ── */
+.screen{display:none;}
+.screen.active{display:block;animation:slidein .28s ease;}
+@keyframes slidein{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
+
+/* ── Top app bar ── */
+.appbar{padding:8px 20px 14px;display:flex;align-items:center;gap:12px;}
+.appbar.grad{background:linear-gradient(150deg,var(--blue-800),var(--blue-900));}
+.ab-back{width:36px;height:36px;border-radius:11px;background:var(--gray-100);display:flex;align-items:center;
+  justify-content:center;font-size:18px;color:var(--gray-700);cursor:pointer;flex-shrink:0;}
+.appbar.grad .ab-back{background:rgba(255,255,255,.12);color:#fff;}
+.ab-title{flex:1;}
+.ab-title h2{font-family:'Instrument Serif',serif;font-size:19px;color:var(--gray-900);font-weight:400;}
+.appbar.grad .ab-title h2{color:#fff;}
+.ab-title p{font-size:10.5px;color:var(--gray-400);margin-top:1px;}
+.appbar.grad .ab-title p{color:rgba(255,255,255,.55);}
+.ab-act{width:36px;height:36px;border-radius:11px;background:var(--gray-100);display:flex;align-items:center;
+  justify-content:center;font-size:18px;color:var(--gray-600);cursor:pointer;flex-shrink:0;position:relative;}
+.appbar.grad .ab-act{background:rgba(255,255,255,.12);color:#fff;}
+.ab-act .ndot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red-500);border-radius:50%;border:2px solid var(--white);}
+.appbar.grad .ab-act .ndot{border-color:var(--blue-800);}
+
+/* ── HOME header ── */
+.home-hero{background:linear-gradient(155deg,var(--blue-800)0%,var(--blue-900)55%,#0a1c33 100%);
+  padding:8px 20px 26px;position:relative;overflow:hidden;}
+.home-hero::before{content:"";position:absolute;right:-50px;top:-30px;width:190px;height:190px;border-radius:50%;
+  background:radial-gradient(circle,rgba(13,148,136,.32),transparent 70%);}
+.hh-top{display:flex;align-items:center;gap:11px;position:relative;z-index:2;margin-bottom:18px;}
+.hh-av{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--teal-600),var(--blue-500));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Instrument Serif',serif;
+  font-size:17px;border:2px solid rgba(255,255,255,.2);flex-shrink:0;}
+.hh-greet{flex:1;}
+.hh-greet .g1{font-size:11px;color:rgba(255,255,255,.6);}
+.hh-greet .g2{font-family:'Instrument Serif',serif;font-size:17px;color:#fff;}
+.hh-icons{display:flex;gap:8px;}
+.hh-ic{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;
+  justify-content:center;font-size:17px;color:#fff;position:relative;}
+.hh-ic .ndot{position:absolute;top:5px;right:5px;width:8px;height:8px;background:var(--red-500);border-radius:50%;border:2px solid var(--blue-800);}
+.duty-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:15px;
+  padding:13px 15px;position:relative;z-index:2;display:flex;align-items:center;gap:11px;}
+.duty-dot{width:9px;height:9px;border-radius:50%;background:var(--green-400);flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:pul 2s infinite;}
+@keyframes pul{0%{box-shadow:0 0 0 0 rgba(52,211,153,.6);}70%{box-shadow:0 0 0 7px rgba(52,211,153,0);}100%{box-shadow:0 0 0 0 rgba(52,211,153,0);}}
+.duty-card .dt{flex:1;}
+.duty-card .dt .dl{font-size:12px;color:#fff;font-weight:600;}
+.duty-card .dt .ds{font-size:10px;color:rgba(255,255,255,.55);margin-top:1px;}
+.duty-shift{text-align:right;}
+.duty-shift .sv{font-size:12px;color:var(--teal-400,#2dd4bf);font-weight:700;}
+.duty-shift .sl{font-size:9px;color:rgba(255,255,255,.5);}
+
+.body-pad{padding:18px 20px 24px;}
+.body-pad.pull{margin-top:-14px;border-radius:20px 20px 0 0;background:var(--gray-50);position:relative;z-index:3;}
+
+.sec-title{font-size:12.5px;font-weight:700;color:var(--gray-800);margin-bottom:11px;display:flex;
+  align-items:center;justify-content:space-between;}
+.sec-title .more{font-size:11px;color:var(--blue-600);font-weight:600;}
+.sec-title.mt{margin-top:22px;}
+
+/* stat chips */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stat-c{background:#fff;border:1px solid var(--gray-200);border-radius:15px;padding:13px;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.stat-c .si{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:17px;margin-bottom:9px;}
+.stat-c .sv{font-family:'Instrument Serif',serif;font-size:24px;color:var(--gray-900);line-height:1;}
+.stat-c .sl{font-size:10.5px;color:var(--gray-500);margin-top:3px;}
+.ic-blue{background:var(--blue-100);color:var(--blue-600);}
+.ic-teal{background:var(--teal-100);color:var(--teal-600);}
+.ic-amber{background:var(--amber-100);color:var(--amber-700);}
+.ic-red{background:var(--red-100);color:var(--red-600);}
+.ic-green{background:var(--green-100);color:var(--green-700);}
+.ic-purple{background:var(--purple-100);color:var(--purple-600);}
+
+/* quick actions */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.qa{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);transition:transform .12s;}
+.qa:active{transform:scale(.94);}
+.qa .qi{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:19px;margin:0 auto 7px;}
+.qa .ql{font-size:9.5px;color:var(--gray-600);font-weight:600;line-height:1.25;}
+
+/* alert card */
+.alert-c{display:flex;gap:11px;padding:12px 13px;border-radius:14px;border:1px solid;margin-bottom:9px;cursor:pointer;}
+.alert-c.crit{background:var(--red-50);border-color:var(--red-100);}
+.alert-c.warn{background:var(--amber-50);border-color:var(--amber-100);}
+.alert-c.info{background:var(--blue-50);border-color:var(--blue-100);}
+.alert-c .ai{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;}
+.alert-c.crit .ai{background:var(--red-100);color:var(--red-600);}
+.alert-c.warn .ai{background:var(--amber-100);color:var(--amber-700);}
+.alert-c.info .ai{background:var(--blue-100);color:var(--blue-600);}
+.alert-c .at{flex:1;min-width:0;}
+.alert-c .at h4{font-size:12px;font-weight:600;color:var(--gray-900);margin-bottom:2px;}
+.alert-c .at p{font-size:10.5px;color:var(--gray-500);line-height:1.4;}
+.alert-c .atime{font-size:9px;color:var(--gray-400);white-space:nowrap;flex-shrink:0;}
+
+/* next patient card */
+.next-card{background:linear-gradient(135deg,var(--teal-600),var(--blue-700));border-radius:17px;padding:16px;
+  color:#fff;position:relative;overflow:hidden;box-shadow:0 8px 22px rgba(13,148,136,.32);cursor:pointer;}
+.next-card::before{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.09);}
+.nc-top{display:flex;align-items:center;gap:11px;position:relative;z-index:2;margin-bottom:13px;}
+.nc-token{width:50px;height:50px;border-radius:14px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.nc-token .tl{font-size:7px;letter-spacing:.6px;opacity:.8;font-weight:700;}
+.nc-token .tn{font-family:'Instrument Serif',serif;font-size:21px;line-height:1;}
+.nc-info{flex:1;}
+.nc-info .nl{font-size:9px;letter-spacing:1px;text-transform:uppercase;opacity:.8;font-weight:700;}
+.nc-info h3{font-family:'Instrument Serif',serif;font-size:17px;margin-top:1px;}
+.nc-info p{font-size:10.5px;opacity:.85;margin-top:1px;}
+.nc-btn{background:rgba(255,255,255,.95);color:var(--blue-700);border:none;border-radius:11px;padding:10px;
+  font-size:12px;font-weight:700;font-family:inherit;width:100%;position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;}
+
+/* list rows */
+.list-card{background:#fff;border:1px solid var(--gray-200);border-radius:15px;overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.lrow{display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:1px solid var(--gray-100);cursor:pointer;}
+.lrow:last-child{border-bottom:none;}
+.lrow:active{background:var(--gray-50);}
+.lr-av{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.lr-info{flex:1;min-width:0;}
+.lr-info h4{font-size:12.5px;font-weight:600;color:var(--gray-900);}
+.lr-info p{font-size:10.5px;color:var(--gray-500);margin-top:1px;}
+.lr-meta{text-align:right;flex-shrink:0;}
+.lr-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue-600);font-weight:600;}
+
+.pill{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:7px;font-size:9.5px;font-weight:700;}
+.pill-blue{background:var(--blue-100);color:var(--blue-700);}
+.pill-green{background:var(--green-100);color:var(--green-700);}
+.pill-red{background:var(--red-100);color:var(--red-600);}
+.pill-amber{background:var(--amber-100);color:var(--amber-700);}
+.pill-teal{background:var(--teal-100);color:var(--teal-700);}
+.pill-purple{background:var(--purple-100);color:var(--purple-600);}
+.pill-gray{background:var(--gray-100);color:var(--gray-600);}
+
+/* schedule timeline */
+.tl-item{display:flex;gap:12px;}
+.tl-time{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--blue-600);font-weight:600;
+  width:50px;flex-shrink:0;padding-top:14px;}
+.tl-line{width:2px;background:var(--gray-200);position:relative;flex-shrink:0;}
+.tl-line::before{content:"";position:absolute;top:15px;left:-3px;width:8px;height:8px;border-radius:50%;
+  background:var(--blue-500);border:2px solid #fff;box-shadow:0 0 0 1.5px var(--blue-200);}
+.tl-item.done .tl-line::before{background:var(--green-500);box-shadow:0 0 0 1.5px var(--green-200);}
+.tl-item.now .tl-line::before{background:var(--amber-500);box-shadow:0 0 0 1.5px var(--amber-100);}
+.tl-card{flex:1;background:#fff;border:1px solid var(--gray-200);border-radius:13px;padding:11px 13px;margin-bottom:9px;}
+.tl-card h4{font-size:12px;font-weight:600;color:var(--gray-900);}
+.tl-card p{font-size:10px;color:var(--gray-500);margin-top:2px;}
+
+/* segmented control */
+.seg{display:flex;background:var(--gray-100);border-radius:11px;padding:3px;margin-bottom:15px;}
+.seg-btn{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:11px;font-weight:600;
+  color:var(--gray-500);cursor:pointer;border:none;background:none;font-family:inherit;}
+.seg-btn.active{background:#fff;color:var(--blue-700);box-shadow:0 1px 3px rgba(0,0,0,.1);}
+
+/* search bar */
+.searchbar{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--gray-200);
+  border-radius:13px;padding:11px 14px;margin-bottom:15px;}
+.searchbar i{font-size:17px;color:var(--blue-500);}
+.searchbar input{flex:1;border:none;outline:none;font-size:12.5px;font-family:inherit;color:var(--gray-700);background:none;}
+
+/* patient detail header */
+.pd-hero{background:linear-gradient(150deg,var(--blue-800),var(--blue-900));padding:6px 20px 22px;}
+.pd-card{display:flex;align-items:center;gap:13px;}
+.pd-photo{width:62px;height:62px;border-radius:17px;background:linear-gradient(135deg,var(--teal-600),var(--blue-500));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Instrument Serif',serif;
+  font-size:24px;border:2px solid rgba(255,255,255,.22);flex-shrink:0;}
+.pd-info{flex:1;}
+.pd-info h2{font-family:'Instrument Serif',serif;font-size:20px;color:#fff;}
+.pd-info .pm{font-size:10.5px;color:rgba(255,255,255,.6);margin-top:2px;}
+.pd-info .pid{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--teal-400,#2dd4bf);margin-top:3px;}
+.pd-allergy{margin-top:13px;display:flex;align-items:center;gap:7px;background:rgba(220,38,38,.2);
+  border:1px solid rgba(220,38,38,.4);border-radius:11px;padding:9px 12px;}
+.pd-allergy i{font-size:16px;color:var(--red-300,#fca5a5);}
+.pd-allergy span{font-size:10.5px;color:#fecaca;font-weight:600;}
+
+/* vital chips */
+.vital-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.vital-c{background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:10px 5px;text-align:center;}
+.vital-c .vv{font-family:'Instrument Serif',serif;font-size:16px;color:var(--gray-900);line-height:1;}
+.vital-c .vv.warn{color:var(--amber-600);}
+.vital-c .vv.ok{color:var(--green-600);}
+.vital-c .vl{font-size:8px;color:var(--gray-400);font-weight:700;text-transform:uppercase;margin-top:4px;letter-spacing:.3px;}
+
+/* info card */
+.info-card{background:#fff;border:1px solid var(--gray-200);border-radius:15px;padding:14px;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:13px;}
+.info-card h3{font-size:12.5px;font-weight:700;color:var(--gray-800);margin-bottom:11px;display:flex;align-items:center;gap:7px;}
+.info-card h3 i{font-size:16px;color:var(--blue-600);}
+.med-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray-100);}
+.med-row:last-child{border-bottom:none;padding-bottom:0;}
+.med-row:first-of-type{padding-top:0;}
+.med-ic{width:33px;height:33px;border-radius:9px;background:var(--green-100);color:var(--green-700);
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.med-info{flex:1;}
+.med-info h4{font-size:11.5px;font-weight:600;color:var(--gray-900);}
+.med-info p{font-size:9.5px;color:var(--gray-500);}
+
+/* result row */
+.res-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--gray-100);}
+.res-row:last-child{border-bottom:none;}
+.res-row .rn{font-size:11.5px;color:var(--gray-700);font-weight:500;}
+.res-row .rv{display:flex;align-items:center;gap:7px;}
+.res-row .rval{font-size:12px;font-weight:700;color:var(--gray-900);}
+
+/* action buttons */
+.act-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:13px;border-radius:13px;
+  font-size:12.5px;font-weight:700;font-family:inherit;border:none;cursor:pointer;transition:transform .12s;}
+.btn:active{transform:scale(.97);}
+.btn i{font-size:16px;}
+.btn-primary{background:linear-gradient(135deg,var(--blue-600),var(--blue-700));color:#fff;box-shadow:0 6px 16px rgba(33,118,214,.3);}
+.btn-teal{background:linear-gradient(135deg,var(--teal-600),var(--teal-700));color:#fff;box-shadow:0 6px 16px rgba(13,148,136,.3);}
+.btn-green{background:linear-gradient(135deg,var(--green-600),var(--green-700));color:#fff;box-shadow:0 6px 16px rgba(5,150,105,.3);}
+.btn-red{background:var(--red-600);color:#fff;}
+.btn-outline{background:#fff;border:1.5px solid var(--gray-200);color:var(--gray-700);}
+.btn-block{width:100%;}
+
+/* SOAP compact */
+.soap-field{margin-bottom:13px;}
+.soap-field label{font-size:10.5px;font-weight:700;color:var(--blue-700);text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.soap-field label .tag{width:18px;height:18px;border-radius:5px;background:var(--blue-100);color:var(--blue-700);
+  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;}
+.soap-field textarea,.soap-field input{width:100%;background:#fff;border:1.5px solid var(--gray-200);border-radius:12px;
+  padding:11px 13px;font-size:12px;font-family:inherit;color:var(--gray-800);resize:none;line-height:1.55;}
+.soap-field textarea:focus,.soap-field input:focus{outline:none;border-color:var(--blue-400);}
+
+/* rx item */
+.rx-item{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--gray-200);
+  border-radius:13px;padding:11px 13px;margin-bottom:9px;}
+.rx-ico{width:36px;height:36px;border-radius:10px;background:var(--green-100);color:var(--green-700);
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.rx-it{flex:1;}
+.rx-it h4{font-size:12px;font-weight:600;color:var(--gray-900);}
+.rx-it .rxd{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.rx-it .rxd span{background:var(--blue-50);border:1px solid var(--blue-100);color:var(--blue-700);
+  border-radius:5px;padding:1px 6px;font-size:8.5px;font-weight:600;}
+
+/* bed card mobile */
+.bed-m{background:#fff;border:1px solid var(--gray-200);border-radius:15px;padding:13px;margin-bottom:11px;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);cursor:pointer;}
+.bed-m-top{display:flex;align-items:center;gap:11px;margin-bottom:11px;}
+.bed-m-tag{width:46px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;flex-shrink:0;}
+.bed-m-tag .bn{font-family:'Instrument Serif',serif;font-size:16px;line-height:1;}
+.bed-m-tag .bw{font-size:7px;font-weight:700;}
+.bed-m-pt{flex:1;}
+.bed-m-pt h4{font-size:13px;font-weight:600;color:var(--gray-900);}
+.bed-m-pt p{font-size:10px;color:var(--gray-500);margin-top:1px;}
+.bed-m-vit{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.bed-m-v{background:var(--gray-50);border-radius:9px;padding:7px 3px;text-align:center;}
+.bed-m-v .mv{font-size:11.5px;font-weight:700;color:var(--gray-800);}
+.bed-m-v .mv.warn{color:var(--amber-600);}
+.bed-m-v .ml{font-size:7.5px;color:var(--gray-400);font-weight:700;text-transform:uppercase;margin-top:1px;}
+
+/* tele */
+.tele-m{background:var(--blue-900);border-radius:0;height:380px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;}
+.tele-m::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(33,118,214,.25),transparent 65%);}
+.tele-m-pt{text-align:center;color:#fff;position:relative;z-index:2;}
+.tele-m-pt .tav{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--blue-500),var(--teal-600));
+  display:flex;align-items:center;justify-content:center;font-size:38px;font-family:'Instrument Serif',serif;
+  margin:0 auto 13px;border:3px solid rgba(255,255,255,.2);}
+.tele-m-pt h3{font-family:'Instrument Serif',serif;font-size:18px;}
+.tele-m-pt p{font-size:11px;opacity:.7;margin-top:3px;}
+.tele-m-self{position:absolute;bottom:14px;right:14px;width:84px;height:112px;border-radius:13px;
+  background:linear-gradient(135deg,var(--teal-700),var(--blue-800));border:2px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.65);font-size:9px;z-index:3;text-align:center;}
+.tele-m-timer{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.45);
+  border-radius:16px;padding:5px 13px;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;z-index:3;}
+.tele-m-timer .rec{width:7px;height:7px;border-radius:50%;background:var(--red-500);}
+.tele-m-ctrls{display:flex;gap:11px;justify-content:center;padding:18px;background:#fff;}
+.tele-ctrl{width:50px;height:50px;border-radius:50%;background:var(--gray-100);display:flex;align-items:center;
+  justify-content:center;font-size:20px;color:var(--gray-700);cursor:pointer;}
+.tele-ctrl.end{background:var(--red-600);color:#fff;}
+
+/* inbox */
+.inbox-row{display:flex;gap:11px;padding:13px 14px;border-bottom:1px solid var(--gray-100);cursor:pointer;}
+.inbox-row:active{background:var(--gray-50);}
+.inbox-row.unread{background:var(--blue-50);}
+.ib-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.ib-info{flex:1;min-width:0;}
+.ib-info .ibh{display:flex;justify-content:space-between;align-items:baseline;}
+.ib-info .ibn{font-size:12px;font-weight:600;color:var(--gray-900);}
+.ib-info .ibt{font-size:9px;color:var(--gray-400);}
+.ib-info .ibp{font-size:10.5px;color:var(--gray-500);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* profile */
+.prof-hero{background:linear-gradient(150deg,var(--teal-600),var(--blue-700));padding:24px 20px 26px;text-align:center;}
+.prof-av{width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.18);border:3px solid rgba(255,255,255,.45);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Instrument Serif',serif;
+  font-size:30px;margin:0 auto 12px;}
+.prof-hero h2{font-family:'Instrument Serif',serif;font-size:21px;color:#fff;}
+.prof-hero p{font-size:11px;color:rgba(255,255,255,.78);margin-top:3px;}
+.prof-hpr{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.25);border-radius:18px;padding:5px 13px;margin-top:11px;
+  font-size:9.5px;color:#fff;font-family:'JetBrains Mono',monospace;}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#fff;
+  border:1px solid var(--gray-200);border-radius:15px;overflow:hidden;margin-bottom:18px;}
+.prof-stat{text-align:center;padding:14px 6px;border-right:1px solid var(--gray-100);}
+.prof-stat:last-child{border-right:none;}
+.prof-stat .pv{font-family:'Instrument Serif',serif;font-size:20px;color:var(--blue-700);}
+.prof-stat .pl{font-size:9px;color:var(--gray-500);margin-top:2px;}
+.menu-row{display:flex;align-items:center;gap:12px;padding:13px 14px;background:#fff;border:1px solid var(--gray-200);
+  border-radius:13px;margin-bottom:8px;cursor:pointer;}
+.menu-row:active{background:var(--gray-50);}
+.menu-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.menu-tx{flex:1;}
+.menu-tx h4{font-size:12.5px;font-weight:600;color:var(--gray-900);}
+.menu-tx p{font-size:10px;color:var(--gray-500);margin-top:1px;}
+.toggle-m{width:40px;height:23px;background:var(--green-500);border-radius:12px;position:relative;flex-shrink:0;cursor:pointer;}
+.toggle-m::after{content:"";width:17px;height:17px;background:#fff;border-radius:50%;position:absolute;right:3px;top:3px;transition:all .2s;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+.toggle-m.off{background:var(--gray-300);}
+.toggle-m.off::after{right:auto;left:3px;}
+
+/* HMS strip mobile */
+.hms-m{background:var(--teal-50);border:1px solid var(--teal-100);border-radius:13px;padding:11px 13px;}
+.hms-m .hmh{font-size:10px;font-weight:700;color:var(--teal-700);text-transform:uppercase;letter-spacing:.6px;
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.hms-m .hmh i{font-size:13px;}
+.hms-m-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.hms-m-item{display:flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--teal-100);
+  border-radius:8px;padding:4px 8px;font-size:9px;color:var(--gray-600);font-weight:600;}
+.hms-m-item .hd{width:5px;height:5px;border-radius:50%;background:var(--green-500);}
+
+/* bottom nav */
+.botnav{display:flex;background:#fff;border-top:1px solid var(--gray-200);padding:8px 6px 22px;flex-shrink:0;
+  box-shadow:0 -2px 12px rgba(0,0,0,.04);}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 2px;cursor:pointer;
+  border:none;background:none;font-family:inherit;}
+.bn-item i{font-size:21px;color:var(--gray-400);}
+.bn-item span{font-size:8.5px;color:var(--gray-400);font-weight:600;}
+.bn-item.active i,.bn-item.active span{color:var(--blue-700);}
+.bn-center{flex:0 0 auto;margin-top:-22px;}
+.bn-center .bc-btn{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--teal-600),var(--blue-600));
+  display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(13,148,136,.45);border:4px solid #fff;}
+.bn-center .bc-btn i{font-size:24px;color:#fff;}
+
+/* fab */
+.fab{position:absolute;bottom:90px;right:18px;width:52px;height:52px;border-radius:17px;
+  background:linear-gradient(135deg,var(--blue-600),var(--blue-700));display:flex;align-items:center;
+  justify-content:center;box-shadow:0 8px 22px rgba(33,118,214,.42);z-index:50;cursor:pointer;}
+.fab i{font-size:24px;color:#fff;}
+
+.toast{position:absolute;bottom:96px;left:50%;transform:translateX(-50%)translateY(20px);
+  background:var(--gray-900);color:#fff;padding:11px 18px;border-radius:13px;font-size:11.5px;font-weight:600;
+  display:flex;align-items:center;gap:7px;opacity:0;transition:all .3s;z-index:200;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%)translateY(0);}
+.toast i{font-size:15px;color:var(--green-400);}
+
+.feature-strip{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap;justify-content:center;max-width:880px;}
+.feat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;
+  padding:16px 18px;width:200px;}
+.feat .fi{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--blue-600),var(--teal-600));
+  display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;margin-bottom:10px;}
+.feat h4{font-size:12.5px;color:#fff;font-weight:600;margin-bottom:4px;}
+.feat p{font-size:10.5px;color:rgba(255,255,255,.55);line-height:1.5;}
+
+.divider-m{height:1px;background:var(--gray-200);margin:13px 0;}
+</style>
+</head>
+<body>
+
+<!-- ════ SHOWCASE HEADER ════ -->
+<div class="showcase-head">
+  <div class="sh-logo">
+    <div class="sh-mark">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M4 4 L12 12 L20 4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 20 L12 12 L20 20" stroke="rgba(255,255,255,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="2.5" fill="white"/>
+      </svg>
+    </div>
+    <div class="sh-logo-txt">
+      <div class="n">Veltrixair Health</div>
+      <div class="s">Clinician App</div>
+    </div>
+  </div>
+  <h1>The doctor's <em>practice,</em> in your pocket.</h1>
+  <p>On-the-go clinical workspace for ward rounds, OPD queues, teleconsults and e-prescribing —<br>fully synced with your Hospital Management System and the Veltrixair patient app.</p>
+  <div class="sh-tags">
+    <span class="sh-tag"><i class="ti ti-plug-connected"></i> HMS Integrated</span>
+    <span class="sh-tag"><i class="ti ti-id-badge"></i> ABDM / ABHA</span>
+    <span class="sh-tag"><i class="ti ti-shield-check"></i> DPDP Compliant</span>
+    <span class="sh-tag"><i class="ti ti-device-mobile"></i> Patient App Sync</span>
+  </div>
+</div>
+
+<!-- ════ PHONE ════ -->
+<div class="phone">
+  <div class="phone-screen">
+    <div class="notch"></div>
+    <div class="statusbar" id="statusbar">
+      <span>9:41</span>
+      <span class="sb-r"><i class="ti ti-signal-4g"></i><i class="ti ti-wifi"></i><i class="ti ti-battery-3"></i></span>
+    </div>
+
+    <div class="app">
+      <div class="app-scroll" id="appScroll">
+
+        <!-- ━━━━━━ HOME ━━━━━━ -->
+        <div class="screen active" id="s-home">
+          <div class="home-hero">
+            <div class="hh-top">
+              <div class="hh-av">PS</div>
+              <div class="hh-greet">
+                <div class="g1">Saturday, 16 May 2026</div>
+                <div class="g2">Good morning, Dr. Sharma</div>
+              </div>
+              <div class="hh-icons">
+                <div class="hh-ic" onclick="go('inbox')"><i class="ti ti-bell"></i><span class="ndot"></span></div>
+              </div>
+            </div>
+            <div class="duty-card">
+              <div class="duty-dot"></div>
+              <div class="dt">
+                <div class="dl">On Duty · OPD-3, Cardiology</div>
+                <div class="ds">Apollo Hospital, Bandra</div>
+              </div>
+              <div class="duty-shift">
+                <div class="sv">09:00–17:00</div>
+                <div class="sl">Today's shift</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="body-pad pull">
+            <div class="sec-title">Today at a Glance</div>
+            <div class="stat-grid">
+              <div class="stat-c" onclick="go('schedule')"><div class="si ic-blue"><i class="ti ti-calendar-check"></i></div><div class="sv">14</div><div class="sl">Appointments</div></div>
+              <div class="stat-c" onclick="go('schedule')"><div class="si ic-teal"><i class="ti ti-users-group"></i></div><div class="sv">8</div><div class="sl">In OPD queue</div></div>
+              <div class="stat-c" onclick="go('rounds')"><div class="si ic-amber"><i class="ti ti-bed"></i></div><div class="sv">6</div><div class="sl">Inpatients</div></div>
+              <div class="stat-c" onclick="go('alerts')"><div class="si ic-red"><i class="ti ti-alert-triangle"></i></div><div class="sv">3</div><div class="sl">Critical alerts</div></div>
+            </div>
+
+            <div class="sec-title mt">Now Consulting</div>
+            <div class="next-card" onclick="go('consult')">
+              <div class="nc-top">
+                <div class="nc-token"><div class="tl">TOKEN</div><div class="tn">12</div></div>
+                <div class="nc-info">
+                  <div class="nl">Current Patient</div>
+                  <h3>Tarique Ahmad</h3>
+                  <p>44 yrs · Follow-up · Hypertension</p>
+                </div>
+              </div>
+              <button class="nc-btn"><i class="ti ti-clipboard-heart"></i> Open Consultation</button>
+            </div>
+
+            <div class="sec-title mt">Critical Alerts <span class="more" onclick="go('alerts')">See all</span></div>
+            <div class="alert-c crit" onclick="go('patient')">
+              <div class="ai"><i class="ti ti-heart-bolt"></i></div>
+              <div class="at"><h4>Critical lab — Ramesh Iyer</h4><p>Serum K⁺ 6.8 mmol/L · Hyperkalaemia</p></div>
+              <div class="atime">8m</div>
+            </div>
+            <div class="alert-c warn" onclick="go('rounds')">
+              <div class="ai"><i class="ti ti-activity-heartbeat"></i></div>
+              <div class="at"><h4>Deteriorating — Sunita Devi</h4><p>NEWS2 score 7 · Bed W2-08 · escalated</p></div>
+              <div class="atime">22m</div>
+            </div>
+
+            <div class="sec-title mt">Quick Actions</div>
+            <div class="qa-grid">
+              <div class="qa" onclick="go('consult')"><div class="qi ic-blue"><i class="ti ti-notes"></i></div><div class="ql">Quick Note</div></div>
+              <div class="qa" onclick="go('prescribe')"><div class="qi ic-green"><i class="ti ti-prescription"></i></div><div class="ql">Prescribe</div></div>
+              <div class="qa" onclick="go('tele')"><div class="qi ic-teal"><i class="ti ti-video"></i></div><div class="ql">Teleconsult</div></div>
+              <div class="qa" onclick="go('rounds')"><div class="qi ic-amber"><i class="ti ti-clipboard-list"></i></div><div class="ql">Ward Round</div></div>
+              <div class="qa" onclick="go('patients')"><div class="qi ic-purple"><i class="ti ti-folders"></i></div><div class="ql">Patient EMR</div></div>
+              <div class="qa" onclick="toast('Lab orders synced with LIS')"><div class="qi ic-blue"><i class="ti ti-flask"></i></div><div class="ql">Order Labs</div></div>
+              <div class="qa" onclick="toast('Imaging request sent to RIS')"><div class="qi ic-red"><i class="ti ti-scan"></i></div><div class="ql">Imaging</div></div>
+              <div class="qa" onclick="go('inbox')"><div class="qi ic-teal"><i class="ti ti-message-2"></i></div><div class="ql">Messages</div></div>
+            </div>
+
+            <div class="sec-title mt">Connected Systems</div>
+            <div class="hms-m">
+              <div class="hmh"><i class="ti ti-plug-connected"></i> All integrations live</div>
+              <div class="hms-m-grid">
+                <div class="hms-m-item"><span class="hd"></span>HMS Core</div>
+                <div class="hms-m-item"><span class="hd"></span>LIS Lab</div>
+                <div class="hms-m-item"><span class="hd"></span>RIS/PACS</div>
+                <div class="hms-m-item"><span class="hd"></span>Pharmacy</div>
+                <div class="hms-m-item"><span class="hd"></span>ABDM</div>
+                <div class="hms-m-item"><span class="hd"></span>Patient App</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ SCHEDULE / QUEUE ━━━━━━ -->
+        <div class="screen" id="s-schedule">
+          <div class="appbar">
+            <div class="ab-back" onclick="go('home')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Today's Schedule</h2><p>16 May · 14 appointments</p></div>
+            <div class="ab-act"><i class="ti ti-calendar-plus"></i></div>
+          </div>
+          <div class="body-pad" style="padding-top:4px;">
+            <div class="seg" id="seg-sched">
+              <button class="seg-btn active" data-seg="queue">OPD Queue</button>
+              <button class="seg-btn" data-seg="timeline">Timeline</button>
+            </div>
+
+            <div id="seg-queue">
+              <div class="next-card" style="margin-bottom:15px;" onclick="go('consult')">
+                <div class="nc-top">
+                  <div class="nc-token"><div class="tl">TOKEN</div><div class="tn">12</div></div>
+                  <div class="nc-info"><div class="nl">Now Consulting</div><h3>Tarique Ahmad</h3><p>Started 09:32 · Hypertension</p></div>
+                </div>
+                <button class="nc-btn"><i class="ti ti-player-skip-forward"></i> Call Next · Token 13</button>
+              </div>
+              <div class="sec-title">Waiting <span class="more">8 patients</span></div>
+              <div class="list-card">
+                <div class="lrow" onclick="go('patient')">
+                  <div class="lr-av" style="background:linear-gradient(135deg,var(--blue-500),var(--teal-600))">RK</div>
+                  <div class="lr-info"><h4>Rekha Kapoor · #13</h4><p>52 F · New · Chest pain</p></div>
+                  <div class="lr-meta"><span class="pill pill-blue">Next</span><div style="font-size:9px;color:var(--gray-400);margin-top:3px;">Waited 34m</div></div>
+                </div>
+                <div class="lrow">
+                  <div class="lr-av" style="background:linear-gradient(135deg,var(--green-600),var(--teal-600))">AN</div>
+                  <div class="lr-info"><h4>Anand Nair · #14</h4><p>61 M · Follow-up · Arrhythmia</p></div>
+                  <div class="lr-meta"><span class="pill pill-amber">Waiting</span><div style="font-size:9px;color:var(--gray-400);margin-top:3px;">29m</div></div>
+                </div>
+                <div class="lrow">
+                  <div class="lr-av" style="background:linear-gradient(135deg,var(--purple-600),var(--blue-700))">MP</div>
+                  <div class="lr-info"><h4>Meera Pillai · #15</h4><p>38 F · New · Palpitations</p></div>
+                  <div class="lr-meta"><span class="pill pill-amber">Waiting</span><div style="font-size:9px;color:var(--gray-400);margin-top:3px;">22m</div></div>
+                </div>
+                <div class="lrow">
+                  <div class="lr-av" style="background:linear-gradient(135deg,var(--amber-600),var(--red-500))">JS</div>
+                  <div class="lr-info"><h4>Joseph Sebastian · #16</h4><p>70 M · Follow-up · Heart failure</p></div>
+                  <div class="lr-meta"><span class="pill pill-amber">Waiting</span><div style="font-size:9px;color:var(--gray-400);margin-top:3px;">14m</div></div>
+                </div>
+                <div class="lrow">
+                  <div class="lr-av" style="background:linear-gradient(135deg,var(--teal-600),var(--green-700))">VR</div>
+                  <div class="lr-info"><h4>Vikram Rao · #18</h4><p>56 M · Teleconsult · Report review</p></div>
+                  <div class="lr-meta"><span class="pill pill-teal">Tele 13:00</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="seg-timeline" style="display:none;">
+              <div class="tl-item done"><div class="tl-time">09:00</div><div class="tl-line"></div><div class="tl-card"><h4>Morning Ward Round</h4><p>Cardiac Ward 2 · 6 inpatients · Completed</p></div></div>
+              <div class="tl-item now"><div class="tl-time">09:30</div><div class="tl-line"></div><div class="tl-card"><h4>OPD Consultation Block</h4><p>OPD-3 · Token #12–#25 · In progress</p></div></div>
+              <div class="tl-item"><div class="tl-time">13:00</div><div class="tl-line"></div><div class="tl-card"><h4>Teleconsultation Block</h4><p>3 video consults scheduled</p></div></div>
+              <div class="tl-item"><div class="tl-time">14:30</div><div class="tl-line"></div><div class="tl-card"><h4>Cath Lab — Angiography</h4><p>Patient: Mohammed Ali · Procedure room 1</p></div></div>
+              <div class="tl-item"><div class="tl-time">16:30</div><div class="tl-line"></div><div class="tl-card"><h4>Evening Ward Round</h4><p>Review post-procedure patients</p></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ PATIENTS ━━━━━━ -->
+        <div class="screen" id="s-patients">
+          <div class="appbar">
+            <div class="ab-back" onclick="go('home')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Patient Records</h2><p>EMR · ABDM-linked</p></div>
+            <div class="ab-act"><i class="ti ti-id"></i></div>
+          </div>
+          <div class="body-pad" style="padding-top:4px;">
+            <div class="searchbar"><i class="ti ti-search"></i><input placeholder="Search name, ABHA ID, phone"></div>
+            <div class="sec-title">Recent Patients <span class="more">1,284 total</span></div>
+            <div class="list-card">
+              <div class="lrow" onclick="go('patient')">
+                <div class="lr-av" style="background:var(--blue-600)">TA</div>
+                <div class="lr-info"><h4>Tarique Ahmad</h4><p>44 M · HTN, T2DM · ABHA …5489</p></div>
+                <i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i>
+              </div>
+              <div class="lrow" onclick="go('patient')">
+                <div class="lr-av" style="background:var(--teal-600)">RK</div>
+                <div class="lr-info"><h4>Rekha Kapoor</h4><p>52 F · CAD · ABHA …3320</p></div>
+                <i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i>
+              </div>
+              <div class="lrow" onclick="go('patient')">
+                <div class="lr-av" style="background:var(--green-600)">AN</div>
+                <div class="lr-info"><h4>Anand Nair</h4><p>61 M · Arrhythmia · ABHA …8852</p></div>
+                <i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i>
+              </div>
+              <div class="lrow" onclick="go('patient')">
+                <div class="lr-av" style="background:var(--amber-600)">JS</div>
+                <div class="lr-info"><h4>Joseph Sebastian</h4><p>70 M · CHF, CKD · ABHA …7741</p></div>
+                <i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i>
+              </div>
+              <div class="lrow" onclick="go('patient')">
+                <div class="lr-av" style="background:var(--red-500)">RI</div>
+                <div class="lr-info"><h4>Ramesh Iyer</h4><p>66 M · ACS · Inpatient ICU-2</p></div>
+                <i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i>
+              </div>
+              <div class="lrow" onclick="go('patient')">
+                <div class="lr-av" style="background:var(--purple-600)">MP</div>
+                <div class="lr-info"><h4>Meera Pillai</h4><p>38 F · Palpitations · ABHA …9904</p></div>
+                <i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ PATIENT DETAIL / QUICK EMR ━━━━━━ -->
+        <div class="screen" id="s-patient">
+          <div class="appbar grad" style="padding-bottom:0;">
+            <div class="ab-back" onclick="go('patients')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Patient EMR</h2><p>ABDM Health Record</p></div>
+            <div class="ab-act"><i class="ti ti-share-2"></i></div>
+          </div>
+          <div class="pd-hero">
+            <div class="pd-card">
+              <div class="pd-photo">TA</div>
+              <div class="pd-info">
+                <h2>Tarique Ahmad</h2>
+                <div class="pm">44 yrs · Male · B+ · +91 98765 43210</div>
+                <div class="pid">ABHA 91-7426-3812-5489</div>
+              </div>
+            </div>
+            <div class="pd-allergy">
+              <i class="ti ti-alert-triangle"></i>
+              <span>Allergies: Penicillin, Aspirin</span>
+            </div>
+          </div>
+          <div class="body-pad pull">
+            <div class="sec-title">Latest Vitals <span class="more">09:30 today</span></div>
+            <div class="vital-row" style="margin-bottom:15px;">
+              <div class="vital-c"><div class="vv warn">138/88</div><div class="vl">BP</div></div>
+              <div class="vital-c"><div class="vv ok">72</div><div class="vl">Pulse</div></div>
+              <div class="vital-c"><div class="vv ok">98%</div><div class="vl">SpO₂</div></div>
+              <div class="vital-c"><div class="vv">98.4</div><div class="vl">Temp °F</div></div>
+            </div>
+
+            <div class="info-card">
+              <h3><i class="ti ti-stethoscope"></i> Active Problems</h3>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span class="pill pill-amber">Essential Hypertension</span>
+                <span class="pill pill-amber">Type 2 Diabetes</span>
+                <span class="pill pill-blue">Dyslipidaemia</span>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h3><i class="ti ti-pill"></i> Current Medications</h3>
+              <div class="med-row"><div class="med-ic"><i class="ti ti-pill"></i></div><div class="med-info"><h4>Telmisartan 40mg</h4><p>1-0-0 · After breakfast</p></div></div>
+              <div class="med-row"><div class="med-ic"><i class="ti ti-pill"></i></div><div class="med-info"><h4>Metformin 500mg</h4><p>1-0-1 · After meals</p></div></div>
+              <div class="med-row"><div class="med-ic"><i class="ti ti-pill"></i></div><div class="med-info"><h4>Atorvastatin 10mg</h4><p>0-0-1 · After dinner</p></div></div>
+            </div>
+
+            <div class="info-card">
+              <h3><i class="ti ti-flask"></i> Recent Lab Results</h3>
+              <div class="res-row"><span class="rn">HbA1c</span><div class="rv"><span class="rval">6.4%</span><span class="pill pill-amber">Borderline</span></div></div>
+              <div class="res-row"><span class="rn">LDL Cholesterol</span><div class="rv"><span class="rval">95 mg/dL</span><span class="pill pill-green">Normal</span></div></div>
+              <div class="res-row"><span class="rn">Serum Creatinine</span><div class="rv"><span class="rval">0.9 mg/dL</span><span class="pill pill-green">Normal</span></div></div>
+            </div>
+
+            <div class="info-card">
+              <h3><i class="ti ti-history"></i> Visit History</h3>
+              <div class="med-row"><div class="med-ic ic-blue" style="background:var(--blue-100)"><i class="ti ti-calendar"></i></div><div class="med-info"><h4>Cardiology Consult · 02 May 2026</h4><p>Started Atorvastatin · BP 142/90</p></div></div>
+              <div class="med-row"><div class="med-ic ic-blue" style="background:var(--blue-100)"><i class="ti ti-calendar"></i></div><div class="med-info"><h4>ECG + Chest X-Ray · 18 Apr 2026</h4><p>Normal sinus rhythm · chest clear</p></div></div>
+            </div>
+
+            <div class="act-bar">
+              <button class="btn btn-primary" onclick="go('consult')"><i class="ti ti-clipboard-heart"></i> Consult</button>
+              <button class="btn btn-green" onclick="go('prescribe')"><i class="ti ti-prescription"></i> Prescribe</button>
+              <button class="btn btn-outline" onclick="go('tele')"><i class="ti ti-video"></i> Video Call</button>
+              <button class="btn btn-outline" onclick="toast('Lab order routed to LIS')"><i class="ti ti-flask"></i> Order Labs</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ CONSULTATION / QUICK NOTES ━━━━━━ -->
+        <div class="screen" id="s-consult">
+          <div class="appbar">
+            <div class="ab-back" onclick="go('home')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Consultation</h2><p>Tarique Ahmad · Token #12</p></div>
+            <div class="ab-act"><i class="ti ti-cloud-check" style="color:var(--green-600)"></i></div>
+          </div>
+          <div class="body-pad" style="padding-top:4px;">
+            <div class="seg" id="seg-consult">
+              <button class="seg-btn active" data-seg="notes">SOAP Notes</button>
+              <button class="seg-btn" data-seg="dx">Diagnosis</button>
+              <button class="seg-btn" data-seg="vitals">Vitals</button>
+            </div>
+
+            <div id="seg-notes">
+              <div class="soap-field">
+                <label><span class="tag">S</span> Subjective</label>
+                <textarea rows="3">Occasional morning headaches and mild dizziness over 2 weeks. Medication compliant. Denies chest pain or breathlessness.</textarea>
+              </div>
+              <div class="soap-field">
+                <label><span class="tag">O</span> Objective</label>
+                <textarea rows="3">BP 138/88 mmHg, Pulse 72 regular, SpO₂ 98%. CVS: S1 S2 normal, no murmurs. Chest clear. No pedal oedema.</textarea>
+              </div>
+              <div class="soap-field">
+                <label><span class="tag">A</span> Assessment</label>
+                <textarea rows="2">Essential hypertension — sub-optimally controlled. T2DM stable. Dyslipidaemia on statin.</textarea>
+              </div>
+              <div class="soap-field">
+                <label><span class="tag">P</span> Plan</label>
+                <textarea rows="3">Add Amlodipine 5mg. Continue current meds. Low-salt diet, daily walk. Repeat BP log via app. Review in 4 weeks.</textarea>
+              </div>
+            </div>
+
+            <div id="seg-dx" style="display:none;">
+              <div class="searchbar"><i class="ti ti-search"></i><input placeholder="Search ICD-10 diagnosis"></div>
+              <div class="sec-title">Confirmed Diagnoses</div>
+              <div class="list-card" style="margin-bottom:13px;">
+                <div class="lrow"><div class="lr-av" style="background:var(--blue-600);font-family:'JetBrains Mono',monospace;font-size:9px;">I10</div><div class="lr-info"><h4>Essential hypertension</h4><p>ICD-10 · I10</p></div><i class="ti ti-circle-check" style="color:var(--green-600);font-size:18px;"></i></div>
+                <div class="lrow"><div class="lr-av" style="background:var(--teal-600);font-family:'JetBrains Mono',monospace;font-size:8px;">E11.9</div><div class="lr-info"><h4>Type 2 diabetes mellitus</h4><p>ICD-10 · E11.9</p></div><i class="ti ti-circle-check" style="color:var(--green-600);font-size:18px;"></i></div>
+                <div class="lrow"><div class="lr-av" style="background:var(--purple-600);font-family:'JetBrains Mono',monospace;font-size:8px;">E78.5</div><div class="lr-info"><h4>Hyperlipidaemia</h4><p>ICD-10 · E78.5</p></div><i class="ti ti-circle-check" style="color:var(--green-600);font-size:18px;"></i></div>
+              </div>
+              <div class="sec-title">AI-Suggested from notes</div>
+              <div class="list-card">
+                <div class="lrow"><div class="lr-av" style="background:var(--gray-400);font-family:'JetBrains Mono',monospace;font-size:10px;">R51</div><div class="lr-info"><h4>Headache</h4><p>ICD-10 · R51</p></div><i class="ti ti-circle-plus" style="color:var(--blue-600);font-size:18px;"></i></div>
+                <div class="lrow"><div class="lr-av" style="background:var(--gray-400);font-family:'JetBrains Mono',monospace;font-size:10px;">R42</div><div class="lr-info"><h4>Dizziness &amp; giddiness</h4><p>ICD-10 · R42</p></div><i class="ti ti-circle-plus" style="color:var(--blue-600);font-size:18px;"></i></div>
+              </div>
+            </div>
+
+            <div id="seg-vitals" style="display:none;">
+              <div class="soap-field"><label>Blood Pressure (mmHg)</label><input value="138 / 88"></div>
+              <div class="soap-field"><label>Pulse Rate (bpm)</label><input value="72"></div>
+              <div class="soap-field"><label>SpO₂ (%)</label><input value="98"></div>
+              <div class="soap-field"><label>Temperature (°F)</label><input value="98.4"></div>
+              <div class="soap-field"><label>Blood Sugar — Fasting (mg/dL)</label><input value="98"></div>
+              <p style="font-size:10px;color:var(--gray-400);">Vitals auto-synced from nurse station and patient wearable device.</p>
+            </div>
+
+            <div class="act-bar" style="margin-top:14px;">
+              <button class="btn btn-outline" onclick="toast('Draft saved to EMR')"><i class="ti ti-device-floppy"></i> Save Draft</button>
+              <button class="btn btn-green" onclick="go('prescribe')"><i class="ti ti-arrow-right"></i> Prescribe</button>
+            </div>
+            <button class="btn btn-primary btn-block" style="margin-top:10px;" onclick="toast('Consultation completed & synced')"><i class="ti ti-circle-check"></i> Complete Consultation</button>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ e-PRESCRIBE ━━━━━━ -->
+        <div class="screen" id="s-prescribe">
+          <div class="appbar">
+            <div class="ab-back" onclick="go('consult')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>e-Prescription</h2><p>Tarique Ahmad · RX-26-04412</p></div>
+            <div class="ab-act"><i class="ti ti-printer"></i></div>
+          </div>
+          <div class="body-pad" style="padding-top:4px;">
+            <div class="alert-c info" style="cursor:default;">
+              <div class="ai"><i class="ti ti-shield-check"></i></div>
+              <div class="at"><h4>Allergy &amp; interaction check passed</h4><p>No conflicts with Penicillin / Aspirin allergies</p></div>
+            </div>
+            <div class="searchbar" style="margin-top:13px;"><i class="ti ti-search"></i><input placeholder="Search drug database"></div>
+            <div class="sec-title">Prescription · 4 items</div>
+            <div class="rx-item">
+              <div class="rx-ico"><i class="ti ti-pill"></i></div>
+              <div class="rx-it"><h4>Telmisartan 40mg <span class="pill pill-blue" style="margin-left:4px;">Continue</span></h4>
+                <div class="rxd"><span>1-0-0</span><span>After breakfast</span><span>30 days</span></div></div>
+            </div>
+            <div class="rx-item">
+              <div class="rx-ico"><i class="ti ti-pill"></i></div>
+              <div class="rx-it"><h4>Amlodipine 5mg <span class="pill pill-green" style="margin-left:4px;">New</span></h4>
+                <div class="rxd"><span>1-0-0</span><span>After breakfast</span><span>30 days</span></div></div>
+            </div>
+            <div class="rx-item">
+              <div class="rx-ico"><i class="ti ti-pill"></i></div>
+              <div class="rx-it"><h4>Metformin 500mg <span class="pill pill-blue" style="margin-left:4px;">Continue</span></h4>
+                <div class="rxd"><span>1-0-1</span><span>After meals</span><span>30 days</span></div></div>
+            </div>
+            <div class="rx-item">
+              <div class="rx-ico"><i class="ti ti-pill"></i></div>
+              <div class="rx-it"><h4>Atorvastatin 10mg <span class="pill pill-blue" style="margin-left:4px;">Continue</span></h4>
+                <div class="rxd"><span>0-0-1</span><span>After dinner</span><span>30 days</span></div></div>
+            </div>
+            <div class="soap-field" style="margin-top:6px;">
+              <label>Advice to patient</label>
+              <textarea rows="2">Low-salt diet. 30 min daily walk. Log BP via Veltrixair app. Return if chest pain or severe headache.</textarea>
+            </div>
+            <button class="btn btn-green btn-block" onclick="toast('Rx e-signed · sent to app & pharmacy')"><i class="ti ti-signature"></i> e-Sign &amp; Send Prescription</button>
+            <p style="font-size:9.5px;color:var(--gray-400);text-align:center;margin-top:9px;">Delivered to patient app and partner pharmacy · Aadhaar e-Sign</p>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ WARD ROUNDS ━━━━━━ -->
+        <div class="screen" id="s-rounds">
+          <div class="appbar">
+            <div class="ab-back" onclick="go('home')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Ward Rounds</h2><p>6 inpatients · 2 wards</p></div>
+            <div class="ab-act"><i class="ti ti-clipboard-check"></i></div>
+          </div>
+          <div class="body-pad" style="padding-top:4px;">
+            <div class="seg" id="seg-ward">
+              <button class="seg-btn active" data-seg="all">All (6)</button>
+              <button class="seg-btn" data-seg="icu">ICU (2)</button>
+              <button class="seg-btn" data-seg="w2">Ward 2 (3)</button>
+            </div>
+
+            <div class="bed-m" onclick="go('round')">
+              <div class="bed-m-top">
+                <div class="bed-m-tag" style="background:var(--red-100);color:var(--red-600)"><div class="bn">2</div><div class="bw">ICU</div></div>
+                <div class="bed-m-pt"><h4>Ramesh Iyer</h4><p>66 M · ACS · Day 2 post-PCI</p></div>
+                <span class="pill pill-red">Critical</span>
+              </div>
+              <div class="bed-m-vit">
+                <div class="bed-m-v"><div class="mv warn">96/60</div><div class="ml">BP</div></div>
+                <div class="bed-m-v"><div class="mv warn">112</div><div class="ml">HR</div></div>
+                <div class="bed-m-v"><div class="mv">94%</div><div class="ml">SpO₂</div></div>
+                <div class="bed-m-v"><div class="mv warn">7</div><div class="ml">NEWS2</div></div>
+              </div>
+            </div>
+
+            <div class="bed-m" onclick="go('round')">
+              <div class="bed-m-top">
+                <div class="bed-m-tag" style="background:var(--amber-100);color:var(--amber-700)"><div class="bn">8</div><div class="bw">W2</div></div>
+                <div class="bed-m-pt"><h4>Sunita Devi</h4><p>58 F · Heart failure · Day 1</p></div>
+                <span class="pill pill-amber">Watch</span>
+              </div>
+              <div class="bed-m-vit">
+                <div class="bed-m-v"><div class="mv warn">90/58</div><div class="ml">BP</div></div>
+                <div class="bed-m-v"><div class="mv warn">118</div><div class="ml">HR</div></div>
+                <div class="bed-m-v"><div class="mv warn">91%</div><div class="ml">SpO₂</div></div>
+                <div class="bed-m-v"><div class="mv warn">7</div><div class="ml">NEWS2</div></div>
+              </div>
+            </div>
+
+            <div class="bed-m" onclick="go('round')">
+              <div class="bed-m-top">
+                <div class="bed-m-tag" style="background:var(--blue-100);color:var(--blue-700)"><div class="bn">04</div><div class="bw">W2</div></div>
+                <div class="bed-m-pt"><h4>Mohammed Ali</h4><p>54 M · Pre-procedure · Angiography</p></div>
+                <span class="pill pill-green">Stable</span>
+              </div>
+              <div class="bed-m-vit">
+                <div class="bed-m-v"><div class="mv">126/80</div><div class="ml">BP</div></div>
+                <div class="bed-m-v"><div class="mv">78</div><div class="ml">HR</div></div>
+                <div class="bed-m-v"><div class="mv">98%</div><div class="ml">SpO₂</div></div>
+                <div class="bed-m-v"><div class="mv">2</div><div class="ml">NEWS2</div></div>
+              </div>
+            </div>
+
+            <div class="bed-m" onclick="go('round')">
+              <div class="bed-m-top">
+                <div class="bed-m-tag" style="background:var(--blue-100);color:var(--blue-700)"><div class="bn">06</div><div class="bw">W2</div></div>
+                <div class="bed-m-pt"><h4>Lakshmi Menon</h4><p>62 F · Post-MI · Day 4</p></div>
+                <span class="pill pill-green">Stable</span>
+              </div>
+              <div class="bed-m-vit">
+                <div class="bed-m-v"><div class="mv">130/82</div><div class="ml">BP</div></div>
+                <div class="bed-m-v"><div class="mv">72</div><div class="ml">HR</div></div>
+                <div class="bed-m-v"><div class="mv">97%</div><div class="ml">SpO₂</div></div>
+                <div class="bed-m-v"><div class="mv">1</div><div class="ml">NEWS2</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ WARD ROUND DETAIL ━━━━━━ -->
+        <div class="screen" id="s-round">
+          <div class="appbar grad" style="padding-bottom:0;">
+            <div class="ab-back" onclick="go('rounds')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Round — Bed ICU-2</h2><p>Day 2 post-PCI</p></div>
+            <div class="ab-act"><i class="ti ti-dots"></i></div>
+          </div>
+          <div class="pd-hero">
+            <div class="pd-card">
+              <div class="pd-photo" style="background:linear-gradient(135deg,var(--red-500),var(--amber-600))">RI</div>
+              <div class="pd-info">
+                <h2>Ramesh Iyer</h2>
+                <div class="pm">66 yrs · Male · Acute Coronary Syndrome</div>
+                <div class="pid">ABHA …1120-5563 · Admitted 14 May</div>
+              </div>
+            </div>
+            <div class="pd-allergy" style="background:rgba(220,38,38,.2);">
+              <i class="ti ti-alert-triangle"></i>
+              <span>Critical: Serum K⁺ 6.8 mmol/L — Hyperkalaemia</span>
+            </div>
+          </div>
+          <div class="body-pad pull">
+            <div class="sec-title">Current Vitals <span class="more">Live · telemetry</span></div>
+            <div class="vital-row" style="margin-bottom:14px;">
+              <div class="vital-c"><div class="vv warn">96/60</div><div class="vl">BP</div></div>
+              <div class="vital-c"><div class="vv warn">112</div><div class="vl">HR</div></div>
+              <div class="vital-c"><div class="vv">94%</div><div class="vl">SpO₂</div></div>
+              <div class="vital-c"><div class="vv warn">7</div><div class="vl">NEWS2</div></div>
+            </div>
+
+            <div class="info-card">
+              <h3><i class="ti ti-clipboard-list"></i> Pending Orders</h3>
+              <div class="med-row"><div class="med-ic ic-red" style="background:var(--red-100)"><i class="ti ti-alert-circle"></i></div><div class="med-info"><h4>Review hyperkalaemia management</h4><p>Insulin-dextrose · calcium gluconate</p></div></div>
+              <div class="med-row"><div class="med-ic ic-blue" style="background:var(--blue-100)"><i class="ti ti-flask"></i></div><div class="med-info"><h4>Repeat electrolytes — STAT</h4><p>Ordered · sample pending</p></div></div>
+            </div>
+
+            <div class="soap-field">
+              <label><span class="tag">R</span> Round Note</label>
+              <textarea rows="3">Day 2 post-PCI. Hyperkalaemia noted on morning bloods — started on insulin-dextrose. Haemodynamically borderline, on telemetry. Continue dual antiplatelet. Nephrology referral for CKD co-management.</textarea>
+            </div>
+
+            <div class="act-bar">
+              <button class="btn btn-outline" onclick="toast('Order added to chart')"><i class="ti ti-plus"></i> Add Order</button>
+              <button class="btn btn-outline" onclick="go('prescribe')"><i class="ti ti-prescription"></i> Prescribe</button>
+            </div>
+            <button class="btn btn-green btn-block" style="margin-top:10px;" onclick="toast('Round note saved · marked reviewed')"><i class="ti ti-circle-check"></i> Mark Reviewed</button>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ ALERTS ━━━━━━ -->
+        <div class="screen" id="s-alerts">
+          <div class="appbar">
+            <div class="ab-back" onclick="go('home')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Clinical Alerts</h2><p>3 active · 2 critical</p></div>
+            <div class="ab-act"><i class="ti ti-filter"></i></div>
+          </div>
+          <div class="body-pad" style="padding-top:4px;">
+            <div class="alert-c crit" onclick="go('round')">
+              <div class="ai"><i class="ti ti-heart-bolt"></i></div>
+              <div class="at"><h4>Critical lab value — Ramesh Iyer</h4><p>Serum Potassium 6.8 mmol/L (Ref 3.5–5.1) · Bed ICU-2 · Immediate review required</p></div>
+              <div class="atime">8m</div>
+            </div>
+            <div class="alert-c crit" onclick="go('rounds')">
+              <div class="ai"><i class="ti ti-activity-heartbeat"></i></div>
+              <div class="at"><h4>Deteriorating vitals — Sunita Devi</h4><p>NEWS2 score 7 · BP 90/58, HR 118, SpO₂ 91% · Bed W2-08 · Escalation triggered</p></div>
+              <div class="atime">22m</div>
+            </div>
+            <div class="alert-c warn" onclick="go('patient')">
+              <div class="ai"><i class="ti ti-pill"></i></div>
+              <div class="at"><h4>Drug interaction flagged — Anand Nair</h4><p>Warfarin + new Amiodarone order · Moderate interaction · Confirm dosing</p></div>
+              <div class="atime">1h</div>
+            </div>
+            <div class="alert-c info" onclick="go('patient')">
+              <div class="ai"><i class="ti ti-file-check"></i></div>
+              <div class="at"><h4>Lab report ready — Tarique Ahmad</h4><p>Lipid Profile + HbA1c · Awaiting your sign-off · Auto-pushed to patient app</p></div>
+              <div class="atime">2h</div>
+            </div>
+            <div class="alert-c info" onclick="go('schedule')">
+              <div class="ai"><i class="ti ti-calendar"></i></div>
+              <div class="at"><h4>New appointment booked</h4><p>Meera Pillai booked OPD slot via patient app · 10:30 today</p></div>
+              <div class="atime">3h</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ TELECONSULT ━━━━━━ -->
+        <div class="screen" id="s-tele">
+          <div class="appbar grad">
+            <div class="ab-back" onclick="go('home')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Teleconsultation</h2><p>Secure video · eSanjeevani</p></div>
+            <div class="ab-act"><i class="ti ti-info-circle"></i></div>
+          </div>
+          <div class="tele-m">
+            <div class="tele-m-timer"><span class="rec"></span> 04:38</div>
+            <div class="tele-m-pt">
+              <div class="tav">VR</div>
+              <h3>Vikram Rao</h3>
+              <p>56 yrs · Lab report review · ABHA …8847</p>
+            </div>
+            <div class="tele-m-self">Dr. Sharma<br>(You)</div>
+          </div>
+          <div class="tele-m-ctrls">
+            <div class="tele-ctrl"><i class="ti ti-microphone"></i></div>
+            <div class="tele-ctrl"><i class="ti ti-video"></i></div>
+            <div class="tele-ctrl"><i class="ti ti-message"></i></div>
+            <div class="tele-ctrl end" onclick="toast('Call ended · notes saved')"><i class="ti ti-phone-off"></i></div>
+          </div>
+          <div class="body-pad" style="padding-top:14px;">
+            <div class="sec-title">During Consultation</div>
+            <div class="act-bar">
+              <button class="btn btn-outline" onclick="go('prescribe')"><i class="ti ti-prescription"></i> Prescribe</button>
+              <button class="btn btn-outline" onclick="go('consult')"><i class="ti ti-notes"></i> Add Notes</button>
+              <button class="btn btn-outline" onclick="toast('Report shared to patient app')"><i class="ti ti-file-text"></i> Share Report</button>
+              <button class="btn btn-outline" onclick="toast('Lab order routed to LIS')"><i class="ti ti-flask"></i> Order Tests</button>
+            </div>
+            <div class="info-card" style="margin-top:14px;">
+              <h3><i class="ti ti-clipboard"></i> Consultation Reason</h3>
+              <p style="font-size:11.5px;color:var(--gray-600);line-height:1.55;">Reviewing Lipid Profile and TMT report. Last visit 28 Apr 2026. Known dyslipidaemia with borderline hypertension. No recorded allergies.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ INBOX ━━━━━━ -->
+        <div class="screen" id="s-inbox">
+          <div class="appbar">
+            <div class="ab-back" onclick="go('home')"><i class="ti ti-arrow-left"></i></div>
+            <div class="ab-title"><h2>Inbox</h2><p>Messages &amp; notifications</p></div>
+            <div class="ab-act"><i class="ti ti-edit"></i></div>
+          </div>
+          <div class="body-pad" style="padding:4px 0 0;">
+            <div class="seg" id="seg-inbox" style="margin:0 20px 8px;">
+              <button class="seg-btn active" data-seg="messages">Messages</button>
+              <button class="seg-btn" data-seg="notifs">Notifications</button>
+            </div>
+            <div id="seg-messages">
+              <div class="inbox-row unread">
+                <div class="ib-av" style="background:var(--red-500)">N2</div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">Ward 2 Nursing</span><span class="ibt">2m</span></div><div class="ibp">Bed 8 — patient BP dropping, please advise</div></div>
+              </div>
+              <div class="inbox-row unread">
+                <div class="ib-av" style="background:var(--purple-600)">LB</div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">Lab — Metropolis</span><span class="ibt">8m</span></div><div class="ibp">Critical value: R. Iyer K⁺ 6.8 mmol/L</div></div>
+              </div>
+              <div class="inbox-row">
+                <div class="ib-av" style="background:var(--blue-600)">TA</div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">Tarique Ahmad</span><span class="ibt">1h</span></div><div class="ibp">Thank you doctor, BP readings attached</div></div>
+              </div>
+              <div class="inbox-row">
+                <div class="ib-av" style="background:var(--teal-600)">RK</div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">Dr. Rajesh Kumar</span><span class="ibt">3h</span></div><div class="ibp">Re: Joseph Sebastian referral — accepted</div></div>
+              </div>
+              <div class="inbox-row">
+                <div class="ib-av" style="background:var(--amber-600)">CP</div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">Cath Lab Coordination</span><span class="ibt">Yest</span></div><div class="ibp">M. Ali scheduled for 14:30 tomorrow</div></div>
+              </div>
+            </div>
+            <div id="seg-notifs" style="display:none;">
+              <div class="inbox-row unread">
+                <div class="ib-av" style="background:var(--red-500)"><i class="ti ti-alert-triangle"></i></div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">Critical Alert</span><span class="ibt">8m</span></div><div class="ibp">Hyperkalaemia flagged — Ramesh Iyer ICU-2</div></div>
+              </div>
+              <div class="inbox-row unread">
+                <div class="ib-av" style="background:var(--blue-600)"><i class="ti ti-calendar"></i></div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">New Booking</span><span class="ibt">3h</span></div><div class="ibp">Meera Pillai booked OPD slot via patient app</div></div>
+              </div>
+              <div class="inbox-row">
+                <div class="ib-av" style="background:var(--green-600)"><i class="ti ti-file-check"></i></div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">Lab Result</span><span class="ibt">2h</span></div><div class="ibp">Lipid Profile ready — Tarique Ahmad</div></div>
+              </div>
+              <div class="inbox-row">
+                <div class="ib-av" style="background:var(--teal-600)"><i class="ti ti-refresh"></i></div>
+                <div class="ib-info"><div class="ibh"><span class="ibn">HMS Sync</span><span class="ibt">5h</span></div><div class="ibp">ADT update — 2 new admissions to your ward</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ━━━━━━ PROFILE ━━━━━━ -->
+        <div class="screen" id="s-profile">
+          <div class="prof-hero">
+            <div class="prof-av">PS</div>
+            <h2>Dr. Priya Sharma</h2>
+            <p>Senior Consultant · Cardiology · MBBS, MD, DM</p>
+            <div class="prof-hpr"><i class="ti ti-shield-check" style="color:var(--green-400)"></i> HPR-IN-72-8841-2290</div>
+          </div>
+          <div class="body-pad pull">
+            <div class="prof-stats">
+              <div class="prof-stat"><div class="pv">14</div><div class="pl">Years Exp.</div></div>
+              <div class="prof-stat"><div class="pv">1,284</div><div class="pl">Patients</div></div>
+              <div class="prof-stat"><div class="pv">4.9★</div><div class="pl">Rating</div></div>
+            </div>
+
+            <div class="sec-title">Practice</div>
+            <div class="menu-row" onclick="toast('Opening credentials')"><div class="menu-ic ic-blue"><i class="ti ti-license"></i></div><div class="menu-tx"><h4>Medical Credentials</h4><p>HPR ID, registration, qualifications</p></div><i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i></div>
+            <div class="menu-row" onclick="toast('Opening e-Sign settings')"><div class="menu-ic ic-teal"><i class="ti ti-signature"></i></div><div class="menu-tx"><h4>Digital Signature</h4><p>Prescription signing certificate</p></div><i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i></div>
+            <div class="menu-row" onclick="go('schedule')"><div class="menu-ic ic-amber"><i class="ti ti-calendar-cog"></i></div><div class="menu-tx"><h4>Schedule &amp; Fees</h4><p>OPD ₹599 · Teleconsult ₹449</p></div><i class="ti ti-chevron-right" style="color:var(--gray-300);font-size:18px;"></i></div>
+
+            <div class="sec-title mt">Integrations</div>
+            <div class="menu-row" style="cursor:default;"><div class="menu-ic ic-green"><i class="ti ti-plug-connected"></i></div><div class="menu-tx"><h4>HMS Connection</h4><p>ADT, billing, bed management</p></div><div class="toggle-m"></div></div>
+            <div class="menu-row" style="cursor:default;"><div class="menu-ic ic-blue"><i class="ti ti-flask"></i></div><div class="menu-tx"><h4>LIS / RIS / PACS</h4><p>Lab &amp; radiology systems</p></div><div class="toggle-m"></div></div>
+            <div class="menu-row" style="cursor:default;"><div class="menu-ic ic-teal"><i class="ti ti-device-mobile"></i></div><div class="menu-tx"><h4>Patient App Sync</h4><p>Two-way appointment &amp; Rx sync</p></div><div class="toggle-m"></div></div>
+            <div class="menu-row" style="cursor:default;"><div class="menu-ic ic-purple"><i class="ti ti-id-badge"></i></div><div class="menu-tx"><h4>ABDM / ABHA Gateway</h4><p>National Health Stack</p></div><div class="toggle-m"></div></div>
+
+            <div class="sec-title mt">Preferences</div>
+            <div class="menu-row" style="cursor:default;"><div class="menu-ic ic-amber"><i class="ti ti-bell"></i></div><div class="menu-tx"><h4>Critical Alert Push</h4><p>SMS + push for critical values</p></div><div class="toggle-m"></div></div>
+            <div class="menu-row" style="cursor:default;"><div class="menu-ic ic-blue"><i class="ti ti-moon"></i></div><div class="menu-tx"><h4>Night Mode</h4><p>Dim interface during night shifts</p></div><div class="toggle-m off"></div></div>
+            <div class="menu-row" style="border-color:var(--red-100);" onclick="toast('Signing out…')"><div class="menu-ic ic-red"><i class="ti ti-logout"></i></div><div class="menu-tx"><h4 style="color:var(--red-600)">Sign Out</h4><p>End clinician session securely</p></div></div>
+
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;">
+              <div style="width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--blue-500),var(--teal-600));display:flex;align-items:center;justify-content:center;">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none"><path d="M4 4 L12 12 L20 4" stroke="white" stroke-width="3" stroke-linecap="round"/><path d="M4 20 L12 12 L20 20" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linecap="round"/></svg>
+              </div>
+              <span style="font-size:10px;color:var(--gray-400);font-weight:600;">Veltrixair Health · Clinician App v1.0</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="toast" id="toast"><i class="ti ti-circle-check"></i><span id="toast-txt">Done</span></div>
+
+      <!-- bottom nav -->
+      <div class="botnav">
+        <button class="bn-item active" data-nav="home" onclick="go('home')"><i class="ti ti-home"></i><span>Home</span></button>
+        <button class="bn-item" data-nav="schedule" onclick="go('schedule')"><i class="ti ti-calendar"></i><span>Schedule</span></button>
+        <div class="bn-center"><div class="bc-btn" onclick="go('consult')"><i class="ti ti-clipboard-heart"></i></div></div>
+        <button class="bn-item" data-nav="rounds" onclick="go('rounds')"><i class="ti ti-bed"></i><span>Rounds</span></button>
+        <button class="bn-item" data-nav="profile" onclick="go('profile')"><i class="ti ti-user"></i><span>Profile</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ FEATURE STRIP ════ -->
+<div class="feature-strip">
+  <div class="feat"><div class="fi"><i class="ti ti-plug-connected"></i></div><h4>HMS Integrated</h4><p>Live two-way sync with the Hospital Management System — ADT, billing, bed management, LIS and RIS/PACS.</p></div>
+  <div class="feat"><div class="fi"><i class="ti ti-device-mobile-share"></i></div><h4>Patient App Linked</h4><p>Appointments, prescriptions and reports flow seamlessly to and from the Veltrixair patient application.</p></div>
+  <div class="feat"><div class="fi"><i class="ti ti-clipboard-heart"></i></div><h4>Full Clinical Workflow</h4><p>OPD queue, SOAP notes, ICD-10 diagnosis, e-prescribing, ward rounds and teleconsultation in one app.</p></div>
+  <div class="feat"><div class="fi"><i class="ti ti-shield-check"></i></div><h4>Compliant by Design</h4><p>ABDM / ABHA gateway, DPDP Act 2023 consent, HPR verification and digitally signed prescriptions.</p></div>
+</div>
+
+<script>
+const navMap={home:'home',schedule:'schedule',rounds:'rounds',profile:'profile'};
+function go(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('s-'+screen);
+  if(el)el.classList.add('active');
+  // bottom nav highlight
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  let navKey=navMap[screen];
+  if(!navKey){
+    if(['patients','patient','consult','prescribe','tele','alerts','inbox'].includes(screen))navKey=null;
+  }
+  if(navKey){const b=document.querySelector(`.bn-item[data-nav="${navKey}"]`);if(b)b.classList.add('active');}
+  // status bar tone
+  const sb=document.getElementById('statusbar');
+  if(['patient','round','tele'].includes(screen))sb.classList.add('dark');
+  else sb.classList.remove('dark');
+  document.getElementById('appScroll').scrollTop=0;
+}
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-txt').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+// segmented controls
+document.querySelectorAll('.seg').forEach(seg=>{
+  seg.addEventListener('click',e=>{
+    const btn=e.target.closest('.seg-btn');
+    if(!btn)return;
+    seg.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const id=seg.id.replace('seg-','');
+    seg.querySelectorAll('.seg-btn').forEach(b=>{
+      const pane=document.getElementById('seg-'+b.dataset.seg);
+      if(pane)pane.style.display='none';
+    });
+    const active=document.getElementById('seg-'+btn.dataset.seg);
+    if(active)active.style.display='';
+  });
+});
+// toggles
+document.addEventListener('click',e=>{
+  const tg=e.target.closest('.toggle-m');
+  if(tg)tg.classList.toggle('off');
+  const ir=e.target.closest('.inbox-row');
+  if(ir)ir.classList.remove('unread');
+});
+</script>
+</body>
+</html>
